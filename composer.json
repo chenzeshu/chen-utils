@@ -13,7 +13,7 @@
     "require": {},
     "autoload":{
         "psr-4":{
-            "Chenzeshu\\ChenUtils\\": "src"
+            "Chenzeshu\\ChenUtils\\": "src/"
         }
     }
 }

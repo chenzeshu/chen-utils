@@ -29,6 +29,11 @@ class WechatUtils
         $this->login_url = config('chen.login_url');
     }
 
+    public function iwant()
+    {
+        return "我的包";
+    }
+
     /**
      * 根据$code得到access_token
      * @param $code 微信$code
