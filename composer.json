@@ -1,0 +1,14 @@
+{
+    "name": "chenzeshu/chen-utils",
+    "description": "functions collected",
+    "type": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "chenzeshu",
+            "email": "1193297950@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
