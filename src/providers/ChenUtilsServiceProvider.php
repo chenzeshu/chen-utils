@@ -15,7 +15,8 @@ class ChenUtilsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__."/../config/chen.php" => config_path('chen.php')
+            __DIR__."/../config/chen.php" => config_path('chen.php'),
+            __DIR__."/../Exceptions/BaseException.php" => app_path('Exceptions')
         ]);
     }
 
