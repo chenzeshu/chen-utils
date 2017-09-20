@@ -16,7 +16,7 @@ class ChenUtilsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__."/../config/chen.php" => config_path('chen.php'),
-            __DIR__."/../Exceptions/BaseException.php" => app_path('Exceptions')
+            __DIR__."/../Exceptions/BaseException.php" => app_path('Exceptions/BaseException.php')
         ]);
     }
 
