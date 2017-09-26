@@ -47,7 +47,7 @@ trait PageTrait
             //todo 向没有.php结尾的下一层进发
             foreach ($files as $file){
                 if(!strpos($file, '.php')){
-                    $_files = scandir('/Models/'.$file);
+                    $_files = scandir(app_path('/Models/' .$file));
                     foreach($_files as $_file){
                         if($_file == $filename){
                             $myModel = "App\\Models\\" . $file."\\". $classname;
