@@ -25,12 +25,22 @@
 1. getPaginator($page, $pageSize)
 2. getSearch($page, $pageSize, $needleName, $needle)
 
-|参数|意义|
-|:-:|::|
-|`$page`|页码|
-|`$pageSize`|每页数量|
-|`$needleName`|模糊搜索的字段名|
-|`$needle`|模糊搜索的内容|
+参数|意义
+:----:|----
+`$page` | 页码
+`$pageSize` | 每页数量
+`$needleName` | 模糊搜索的字段名
+`$needle` | 模糊搜索的内容
+
+配合`ReturnTrait`返回数据格式:
+```
+code:$code,
+msg:$msg,
+data:[
+    'data'=>$data,
+    'total'=>$total //页码总数
+]
+```
 
 注意: 本Trait默认`User.php`在`app/`目录下
 1. 使用了递归, 可以下探Models文件夹下所有模型文件
