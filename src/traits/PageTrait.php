@@ -11,33 +11,95 @@ namespace Chenzeshu\ChenUtils\Traits;
 
 trait PageTrait
 {
-    /**
-     * @param $page 开始的页码, 不用减一
-     * @param $pageSize 单页显示数据数目
-     * @return mixed
-     */
-    public function getPaginator($page, $pageSize){
-        $begin = ($page - 1) * $pageSize;
+    protected $model;
+    protected $classname;
+    protected $begin;
+    protected $page;
+    protected $pageSize;
 
+    /**
+     * @param $page
+     * @param $pageSize
+     * 得到
+     * $this->classname 类名
+     * $this->begin 起始位置
+     * $this->page
+     * $this->pageSize
+     */
+    public function init($page, $pageSize)
+    {
+        $this->page = $page;
+        $this->pageSize = $pageSize;
+        //todo get 起始页面
+        $this->begin = $this->getBegin();
+        //todo get Classname
+        $this->classname = $this->getClassname();
+        //todo get Model
+        $this->getModel();
+    }
+
+    private function getBegin(){
+        $begin = ($this->page - 1) * $this->pageSize;
+        return $begin;
+    }
+
+    private function getClassname(){
         $arr = explode('\\',get_class($this));
         $start = strpos($arr[count($arr)-1] ,'Controller' );
         $classname = substr_replace($arr[count($arr)-1], '', $start);
+        return $classname;
+    }
 
-        return $this->matchFile($classname, $begin, $pageSize);
+    /** *******************初始化结束**************************************/
+
+
+    /**
+     * @param $page 开始的页码, 不用减一
+     * @param $pageSize 单页显示数据数目
+     * @return mixed 分页数据 带total
+     */
+    public function getPaginator($page, $pageSize){
+        $this->init($page, $pageSize);
+        $model = new $this->model;
+
+        $info = $model->offset($this->begin)->limit($pageSize)->get();
+        $total = ceil($model->count() / $pageSize);
+        $data = [
+            'data' => $info,
+            'total' => $total
+        ];
+
+        return $data;
     }
 
     /**
-     * @param $classname 我们想要找的文件(无.php, 要加)
-     * @param $begin 开始的数据条数
-     * @param $pageSize 单页显示数据数目
-     * @return mixed 一般返回的是分页API数据
+     * 返回模糊查询模型的分页数据
+     * @param $page
+     * @param $pageSize
      */
-    public function matchFile($classname, $begin, $pageSize){
-        if($classname == 'User'){
+    public function getSearch($page, $pageSize, $needleName, $needle)
+    {
+        $this->init($page, $pageSize);
+        $model = new $this->model;
+
+        $info = $model->where('name', 'like', "%".$needle."%")->offset($this->begin)->limit($this->pageSize)->get();
+        $total = ceil($model->where($needleName, 'like', "%".$needle."%")->count()/$this->pageSize);
+        $data = [
+            'data' => $info,
+            'total' => $total
+        ];
+        return $data;
+    }
+
+    /**
+     * @return mixed model的命名空间
+     */
+    private function getModel(){
+        if($this->classname == 'User'){
             $myModel = "App\\User";
         }
         else {
-            $filename = $classname. '.php';
+            $filename = $this->classname. '.php';
             $modeldir = dirname(app_path('/models'))."/models";
             //todo 首先得到app目录下的文件目录结构数组
             $absolutePaths = $this->getDir($modeldir);
@@ -52,8 +114,7 @@ trait PageTrait
             }
         }
 
-        $data = (new $myModel)->offset($begin)->limit($pageSize)->get();
-        return $data;
+        $this->model = $myModel;
     }
 
     /**
