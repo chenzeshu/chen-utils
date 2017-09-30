@@ -16,21 +16,24 @@
    
 ## 各个traits的用法
 ### 1. PageTrait
-用途: 在不同的**控制器**中, 通过调用一个方法直接得到适用于api的分页数据
+用法:
+1. 建议创建一个`ApiController`, 继承`Controller`, 然后将其他`Restful Controller`
+继承本Controller;
+2. `ApiController`中`use PageTrait;`
 
-```
-use PageTrait;
+### API:
+1. getPaginator($page, $pageSize)
+2. getSearch($page, $pageSize, $needleName, $needle)
 
-/**
-* $page int 起始页码, 无需减一
-* $pageSize int, 每页展示的数据量
-*/
-$this->getPaginator($page, $pageSize);
-```
+|参数|意义|
+|:-:|::|
+|`$page`|页码|
+|`$pageSize`|每页数量|
+|`$needleName`|模糊搜索的字段名|
+|`$needle`|模糊搜索的内容|
+
 注意: 本Trait默认`User.php`在`app/`目录下
-
 1. 使用了递归, 可以下探Models文件夹下所有模型文件
-
 2. wating to do:
 ~~问题1: 目前就做了三层, 从app目录下, 到app/models目录下, 再到下一级
 暂时没有递归文件夹的思路~~
