@@ -56,14 +56,15 @@ trait PageTrait
     /**
      * @param $page 开始的页码, 不用减一
      * @param $pageSize 单页显示数据数目
-     * @return mixed 分页数据 带total
+     * @return mixed 分页数据 $total 数据总量
      */
     public function getPaginator($page, $pageSize){
         $this->init($page, $pageSize);
         $model = new $this->model;
 
         $info = $model->offset($this->begin)->limit($pageSize)->get();
-        $total = ceil($model->count() / $pageSize);
+        // $total = ceil($model->count() / $pageSize);
+        $total = $model->count();
         $data = [
             'data' => $info,
             'total' => $total
@@ -73,7 +74,7 @@ trait PageTrait
     }
 
     /**
-     * 返回模糊查询模型的分页数据
+     * 返回模糊查询模型的分页数据, 及数组总量$total
      * @param $page
      * @param $pageSize
      */
@@ -83,7 +84,8 @@ trait PageTrait
         $model = new $this->model;
 
         $info = $model->where('name', 'like', "%".$needle."%")->offset($this->begin)->limit($this->pageSize)->get();
-        $total = ceil($model->where($needleName, 'like', "%".$needle."%")->count()/$this->pageSize);
+        // $total = ceil($model->where($needleName, 'like', "%".$needle."%")->count()/$this->pageSize);
+        $total = $model->where($needleName, 'like', "%".$needle."%")->count();
         $data = [
             'data' => $info,
             'total' => $total

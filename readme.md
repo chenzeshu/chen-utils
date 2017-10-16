@@ -26,7 +26,7 @@
 2. getSearch($page, $pageSize, $needleName, $needle)
 
 参数|意义
-:----:|----
+----|----
 `$page` | 页码
 `$pageSize` | 每页数量
 `$needleName` | 模糊搜索的字段名
